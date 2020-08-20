@@ -36,6 +36,10 @@ public class Book {
     public Book(){
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String getGenre() {
         return genre;
     }

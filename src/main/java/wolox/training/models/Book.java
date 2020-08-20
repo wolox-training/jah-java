@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -13,24 +14,35 @@ import javax.persistence.Table;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOOK_SEQ")
+    @SequenceGenerator(name = "BOOK_SEQ", sequenceName = "BOOK_SEQ")
     private long id;
+
+    @Column(nullable = true)
     private String genre;
     @NotNull
+    @Column(nullable = false)
     private String author;
     @NotNull
+    @Column(nullable = false)
     private String image;
     @NotNull
+    @Column(nullable = false)
     private String title;
     @NotNull
+    @Column(nullable = false)
     private String subtitle;
     @NotNull
+    @Column(nullable = false)
     private String publisher;
     @NotNull
+    @Column(nullable = false)
     private String year;
     @NotNull
+    @Column(nullable = false)
     private int pages;
     @NotNull
+    @Column(nullable = false, unique = true)
     private String isbn;
 
     public Book(){

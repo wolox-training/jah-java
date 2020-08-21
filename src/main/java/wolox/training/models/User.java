@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,10 +38,7 @@ public class User {
     private LocalDate birthdate;
 
     @NotNull
-    @ManyToMany
-    @JoinTable(name = "book_user",
-        joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     private List<Book> books;
 
     public User() {

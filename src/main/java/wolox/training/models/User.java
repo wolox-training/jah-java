@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.exceptions.BookNotFoundInCollectionException;
 
@@ -54,6 +55,7 @@ public class User {
     }
 
     public void setUsername(String username) {
+        Preconditions.checkNotNull(username, "Username cannot be null");
         this.username = username;
     }
 
@@ -62,6 +64,7 @@ public class User {
     }
 
     public void setName(String name) {
+        Preconditions.checkNotNull(name, "Name cannot be null");
         this.name = name;
     }
 
@@ -70,6 +73,7 @@ public class User {
     }
 
     public void setBirthdate(LocalDate birthdate) {
+        Preconditions.checkNotNull(birthdate, "Birthdate cannot be null");
         this.birthdate = birthdate;
     }
 
@@ -78,6 +82,7 @@ public class User {
     }
 
     public void setBooks(List<Book> books) {
+        Preconditions.checkNotNull(books, "Must add at least one book");
         this.books = books;
     }
 

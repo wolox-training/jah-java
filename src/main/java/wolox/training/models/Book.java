@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
 
 @Entity
 @Table(name = "book")
@@ -62,6 +63,7 @@ public class Book {
     }
 
     public void setGenre(String genre) {
+        Preconditions.checkArgument(genre != null && !genre.isEmpty(), "Genre must have a valid value");
         this.genre = genre;
     }
 
@@ -70,6 +72,7 @@ public class Book {
     }
 
     public void setAuthor(String author) {
+        Preconditions.checkNotNull(author, "Author cannot be null");
         this.author = author;
     }
 
@@ -78,6 +81,7 @@ public class Book {
     }
 
     public void setImage(String image) {
+        Preconditions.checkNotNull(author, "Image cannot be null");
         this.image = image;
     }
 
@@ -86,6 +90,7 @@ public class Book {
     }
 
     public void setTitle(String title) {
+        Preconditions.checkNotNull(title, "Title cannot be null");
         this.title = title;
     }
 
@@ -94,6 +99,7 @@ public class Book {
     }
 
     public void setSubtitle(String subtitle) {
+        Preconditions.checkNotNull(subtitle, "Subtitle cannot be null");
         this.subtitle = subtitle;
     }
 
@@ -102,6 +108,7 @@ public class Book {
     }
 
     public void setPublisher(String publisher) {
+        Preconditions.checkNotNull(publisher, "Publisher cannot be null");
         this.publisher = publisher;
     }
 
@@ -110,6 +117,7 @@ public class Book {
     }
 
     public void setYear(String year) {
+        Preconditions.checkNotNull(year, "Year cannot be null");
         this.year = year;
     }
 
@@ -118,6 +126,7 @@ public class Book {
     }
 
     public void setPages(int pages) {
+        Preconditions.checkNotNull(pages, "Pages cannot be null");
         this.pages = pages;
     }
 
@@ -126,6 +135,7 @@ public class Book {
     }
 
     public void setIsbn(String isbn) {
+        Preconditions.checkNotNull(isbn, "Isbn cannot be null");
         this.isbn = isbn;
     }
 }

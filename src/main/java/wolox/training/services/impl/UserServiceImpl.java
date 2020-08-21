@@ -53,9 +53,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void removeBook(Long id, Long book_id) {
+    public User removeBook(Long id, Long book_id) {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         Book book = bookRepository.findById(book_id).orElseThrow(BookNotFoundException::new);
         user.removeBook(book);
+        return userRepository.save(user);
     }
 }

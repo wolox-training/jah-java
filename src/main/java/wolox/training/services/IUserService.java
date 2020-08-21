@@ -15,6 +15,6 @@ public interface IUserService {
 
     User addBook(Long id, Book book);
 
-    void removeBook(Long id, Long book_id);
+    User removeBook(Long id, Long book_id);
 
 }

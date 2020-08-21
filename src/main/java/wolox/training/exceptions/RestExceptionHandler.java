@@ -13,9 +13,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    public RestExceptionHandler() {
-        super();
-    }
 
     @ExceptionHandler({BookNotFoundException.class})
     protected ResponseEntity<Object> handleNotFound(Exception ex, WebRequest request){

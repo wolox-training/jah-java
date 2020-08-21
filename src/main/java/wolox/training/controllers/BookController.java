@@ -31,17 +31,31 @@ public class BookController {
         return "greeting";
     }
 
+    /**
+     * Services that find a book according to the author entered by parameter
+     * @param author
+     * @return Book object
+     */
     @GetMapping("/author/{author}")
     public Book findByAuthor(@PathVariable String author){
-        return bookRepository.findByAuthor(author);
+        return bookRepository.findByAuthor(author).orElseThrow(BookNotFoundException::new);
     }
 
+    /**
+     * Service that create a new Book with the request body data
+     * @param book
+     * @return Book object created
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Book create(@RequestBody Book book){
         return bookRepository.save(book);
     }
 
+    /**
+     * Service that validate if Book exists and then delete it
+     * @param id
+     */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         bookRepository.findById(id)
@@ -49,6 +63,12 @@ public class BookController {
         bookRepository.deleteById(id);
     }
 
+    /**
+     * Service that validate if Book exist and then update the data with the request body data
+     * @param book
+     * @param id
+     * @return Book object updated
+     */
     @PutMapping("/{id}")
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
         if (book.getId() != id) {

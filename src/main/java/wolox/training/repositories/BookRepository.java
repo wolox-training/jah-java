@@ -9,7 +9,7 @@ import wolox.training.models.Book;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     /**
-     *
+     * This method find a book according to the author entered through a parameter
      * @param author
      * @return Optional Book object
      */

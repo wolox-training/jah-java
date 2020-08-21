@@ -13,17 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import wolox.training.exceptions.BookIdMismatchException;
-import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
-import wolox.training.repositories.BookRepository;
+import wolox.training.services.IBookService;
 
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
 
     @Autowired
-    private BookRepository bookRepository;
+    private IBookService bookService;
 
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model){
@@ -38,7 +36,7 @@ public class BookController {
      */
     @GetMapping("/author/{author}")
     public Book findByAuthor(@PathVariable String author){
-        return bookRepository.findByAuthor(author).orElseThrow(BookNotFoundException::new);
+        return bookService.findByAuthor(author);
     }
 
     /**
@@ -49,7 +47,7 @@ public class BookController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Book create(@RequestBody Book book){
-        return bookRepository.save(book);
+        return bookService.create(book);
     }
 
     /**
@@ -58,9 +56,7 @@ public class BookController {
      */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        bookRepository.findById(id)
-            .orElseThrow(BookNotFoundException::new);
-        bookRepository.deleteById(id);
+        bookService.delete(id);
     }
 
     /**
@@ -70,13 +66,8 @@ public class BookController {
      * @return Book object updated
      */
     @PutMapping("/{id}")
-    public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
-        if (book.getId() != id) {
-            throw new BookIdMismatchException();
-        }
-        bookRepository.findById(id)
-            .orElseThrow(BookNotFoundException::new);
-        return bookRepository.save(book);
+    public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
+        return bookService.update(id, book);
     }
 
 }

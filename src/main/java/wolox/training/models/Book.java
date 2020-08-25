@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "book")
@@ -63,7 +64,7 @@ public class Book {
     }
 
     public void setGenre(String genre) {
-        Preconditions.checkArgument(genre != null && !genre.isEmpty(), "Genre must have a valid value");
+        Preconditions.checkArgument(StringUtils.isEmpty(genre), "Genre must have a valid value");
         this.genre = genre;
     }
 

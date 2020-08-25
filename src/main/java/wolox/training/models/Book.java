@@ -75,7 +75,7 @@ public class Book {
     }
 
     public void setAuthor(String author) {
-        Preconditions.checkNotNull(author, ErrorConstants.AUTHOR_CANNOT_NULL);
+        Preconditions.checkArgument(!StringUtils.isEmpty(author), ErrorConstants.AUTHOR_CANNOT_NULL);
         this.author = author;
     }
 
@@ -84,7 +84,7 @@ public class Book {
     }
 
     public void setImage(String image) {
-        Preconditions.checkNotNull(author, ErrorConstants.IMAGE_CANNOT_NULL);
+        Preconditions.checkArgument(!StringUtils.isEmpty(author), ErrorConstants.IMAGE_CANNOT_NULL);
         this.image = image;
     }
 
@@ -93,7 +93,7 @@ public class Book {
     }
 
     public void setTitle(String title) {
-        Preconditions.checkNotNull(title, ErrorConstants.TITLE_CANNOT_NULL);
+        Preconditions.checkArgument(!StringUtils.isEmpty(title), ErrorConstants.TITLE_CANNOT_NULL);
         this.title = title;
     }
 
@@ -102,7 +102,7 @@ public class Book {
     }
 
     public void setSubtitle(String subtitle) {
-        Preconditions.checkNotNull(subtitle, ErrorConstants.SUBTITLE_CANNOT_NULL);
+        Preconditions.checkArgument(!StringUtils.isEmpty(subtitle), ErrorConstants.SUBTITLE_CANNOT_NULL);
         this.subtitle = subtitle;
     }
 
@@ -111,7 +111,7 @@ public class Book {
     }
 
     public void setPublisher(String publisher) {
-        Preconditions.checkNotNull(publisher, ErrorConstants.PUBLISHER_CANNOT_NULL);
+        Preconditions.checkArgument(!StringUtils.isEmpty(publisher), ErrorConstants.PUBLISHER_CANNOT_NULL);
         this.publisher = publisher;
     }
 

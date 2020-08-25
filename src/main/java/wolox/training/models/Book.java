@@ -1,11 +1,14 @@
 package wolox.training.models;
 
 import com.sun.istack.NotNull;
+import java.util.Collections;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -44,6 +47,9 @@ public class Book {
     @NotNull
     @Column(nullable = false, unique = true)
     private String isbn;
+
+    @ManyToMany(mappedBy = "books")
+    private List<User> users;
 
     public Book(){
     }
@@ -122,5 +128,13 @@ public class Book {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public List<User> getUsers() {
+        return (List<User>) Collections.unmodifiableCollection(users);
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

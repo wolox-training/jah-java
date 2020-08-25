@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import wolox.training.exceptions.BookAlreadyOwnedException;
+import wolox.training.exceptions.BookNotFoundInCollectionException;
 
 @Entity
 @Table(name="users")
@@ -37,10 +39,7 @@ public class User {
     private LocalDate birthdate;
 
     @NotNull
-    @ManyToMany
-    @JoinTable(name = "book_user",
-        joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     private List<Book> books;
 
     public User() {
@@ -93,6 +92,9 @@ public class User {
     }
 
     public void removeBook(Book book) {
+        if(!books.contains(book)){
+            throw new BookNotFoundInCollectionException();
+        }
         books.remove(book);
     }
 

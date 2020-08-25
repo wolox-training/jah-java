@@ -12,7 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import wolox.training.constants.ErrorConstants;
 
 @Entity
 @Table(name = "book")
@@ -65,7 +66,7 @@ public class Book {
     }
 
     public void setGenre(String genre) {
-        Preconditions.checkArgument(StringUtils.isEmpty(genre), "Genre must have a valid value");
+        Preconditions.checkArgument(!StringUtils.isEmpty(genre), ErrorConstants.GENRE_VALID_VALUE);
         this.genre = genre;
     }
 
@@ -74,7 +75,7 @@ public class Book {
     }
 
     public void setAuthor(String author) {
-        Preconditions.checkNotNull(author, "Author cannot be null");
+        Preconditions.checkNotNull(author, ErrorConstants.AUTHOR_CANNOT_NULL);
         this.author = author;
     }
 
@@ -83,7 +84,7 @@ public class Book {
     }
 
     public void setImage(String image) {
-        Preconditions.checkNotNull(author, "Image cannot be null");
+        Preconditions.checkNotNull(author, ErrorConstants.IMAGE_CANNOT_NULL);
         this.image = image;
     }
 
@@ -92,7 +93,7 @@ public class Book {
     }
 
     public void setTitle(String title) {
-        Preconditions.checkNotNull(title, "Title cannot be null");
+        Preconditions.checkNotNull(title, ErrorConstants.TITLE_CANNOT_NULL);
         this.title = title;
     }
 
@@ -101,7 +102,7 @@ public class Book {
     }
 
     public void setSubtitle(String subtitle) {
-        Preconditions.checkNotNull(subtitle, "Subtitle cannot be null");
+        Preconditions.checkNotNull(subtitle, ErrorConstants.SUBTITLE_CANNOT_NULL);
         this.subtitle = subtitle;
     }
 
@@ -110,7 +111,7 @@ public class Book {
     }
 
     public void setPublisher(String publisher) {
-        Preconditions.checkNotNull(publisher, "Publisher cannot be null");
+        Preconditions.checkNotNull(publisher, ErrorConstants.PUBLISHER_CANNOT_NULL);
         this.publisher = publisher;
     }
 
@@ -119,7 +120,8 @@ public class Book {
     }
 
     public void setYear(String year) {
-        Preconditions.checkNotNull(year, "Year cannot be null");
+        Preconditions.checkNotNull(year, ErrorConstants.YEAR_CANNOT_NULL);
+        Preconditions.checkArgument(StringUtils.isNumeric(year), ErrorConstants.YEAR_MUST_NUMBER);
         this.year = year;
     }
 
@@ -128,7 +130,8 @@ public class Book {
     }
 
     public void setPages(int pages) {
-        Preconditions.checkNotNull(pages, "Pages cannot be null");
+        Preconditions.checkNotNull(pages, ErrorConstants.PAGE_CANNOT_NULL);
+        Preconditions.checkArgument(pages > 0, ErrorConstants.PAGE_GREATER_ZERO);
         this.pages = pages;
     }
 
@@ -137,7 +140,8 @@ public class Book {
     }
 
     public void setIsbn(String isbn) {
-        Preconditions.checkNotNull(isbn, "Isbn cannot be null");
+        Preconditions.checkNotNull(isbn, ErrorConstants.ISBN_CANNOT_NULL);
+        Preconditions.checkArgument(StringUtils.isNumeric(isbn), ErrorConstants.ISBN_MUST_NUMBER);
         this.isbn = isbn;
     }
 

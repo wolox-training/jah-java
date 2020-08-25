@@ -16,7 +16,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.apache.commons.lang3.StringUtils;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
+import wolox.training.constants.ErrorConstants;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.exceptions.BookNotFoundInCollectionException;
 
@@ -55,7 +57,7 @@ public class User {
     }
 
     public void setUsername(String username) {
-        Preconditions.checkNotNull(username, "Username cannot be null");
+        Preconditions.checkArgument(StringUtils.isEmpty(username), ErrorConstants.USERNAME_CANNOT_NULL);
         this.username = username;
     }
 
@@ -64,7 +66,7 @@ public class User {
     }
 
     public void setName(String name) {
-        Preconditions.checkNotNull(name, "Name cannot be null");
+        Preconditions.checkArgument(StringUtils.isEmpty(name), ErrorConstants.NAME_CANNOT_NULL);
         this.name = name;
     }
 
@@ -73,7 +75,8 @@ public class User {
     }
 
     public void setBirthdate(LocalDate birthdate) {
-        Preconditions.checkNotNull(birthdate, "Birthdate cannot be null");
+        Preconditions.checkNotNull(birthdate, ErrorConstants.BIRTHDATE_CANNOT_NULL);
+        Preconditions.checkArgument(! birthdate.isAfter(LocalDate.now()), ErrorConstants.BIRTHDATE_GREATER_CURRENT_DATE);
         this.birthdate = birthdate;
     }
 
@@ -82,7 +85,7 @@ public class User {
     }
 
     public void setBooks(List<Book> books) {
-        Preconditions.checkNotNull(books, "Must add at least one book");
+        Preconditions.checkNotNull(books, ErrorConstants.BOOK_LEAST_ONE_BOOK);
         this.books = books;
     }
 

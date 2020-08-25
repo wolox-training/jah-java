@@ -47,6 +47,7 @@ public class BookController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Book create(@RequestBody Book book){
+        System.out.println(book);
         return bookService.create(book);
     }
 

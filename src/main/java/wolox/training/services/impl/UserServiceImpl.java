@@ -9,6 +9,7 @@ import wolox.training.models.Book;
 import wolox.training.models.User;
 import wolox.training.repositories.BookRepository;
 import wolox.training.repositories.UserRepository;
+import wolox.training.services.IBookService;
 import wolox.training.services.IUserService;
 
 @Service
@@ -18,7 +19,7 @@ public class UserServiceImpl implements IUserService {
     UserRepository userRepository;
 
     @Autowired
-    BookRepository bookRepository;
+    IBookService bookService;
 
     @Override
     public User create(User user) {
@@ -55,7 +56,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User removeBook(Long id, Long book_id) {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-        Book book = bookRepository.findById(book_id).orElseThrow(BookNotFoundException::new);
+        Book book = bookService.findById(book_id);
         user.removeBook(book);
         return userRepository.save(user);
     }

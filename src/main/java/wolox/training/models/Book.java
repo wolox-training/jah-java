@@ -1,6 +1,7 @@
 package wolox.training.models;
 
 import com.sun.istack.NotNull;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -138,5 +139,13 @@ public class Book {
     public void setIsbn(String isbn) {
         Preconditions.checkNotNull(isbn, "Isbn cannot be null");
         this.isbn = isbn;
+    }
+
+    public List<User> getUsers() {
+        return (List<User>) Collections.unmodifiableCollection(users);
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

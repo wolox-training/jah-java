@@ -12,4 +12,6 @@ public interface IBookService {
 
     Book update(Long id, Book book);
 
+    Book findById(Long id);
+
 }

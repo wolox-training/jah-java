@@ -37,4 +37,10 @@ public class BookServiceImpl implements IBookService {
         return bookRepository.save(book);
     }
 
+    @Override
+    public Book findById(Long id) {
+        return bookRepository.findById(id)
+            .orElseThrow(BookNotFoundException::new);
+    }
+
 }

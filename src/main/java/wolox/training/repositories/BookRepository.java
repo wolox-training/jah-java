@@ -13,6 +13,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
      * @param author
      * @return Optional Book object
      */
-    Optional<Book> findByAuthor(String author);
+    Optional<Book> findFirstByAuthorIgnoreCase(String author);
 
 }

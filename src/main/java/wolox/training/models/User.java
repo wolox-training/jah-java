@@ -1,5 +1,8 @@
 package wolox.training.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sun.istack.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -41,11 +44,12 @@ public class User {
     @Column(nullable = false)
     private LocalDate birthdate;
 
-    @NotNull
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    private List<Book> books;
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    private List<Book> books = new ArrayList<>();
 
     public User() {
+
     }
 
     public long getId() {
@@ -57,7 +61,7 @@ public class User {
     }
 
     public void setUsername(String username) {
-        Preconditions.checkArgument(StringUtils.isEmpty(username), ErrorConstants.USERNAME_CANNOT_NULL);
+        Preconditions.checkArgument(!StringUtils.isEmpty(username), ErrorConstants.USERNAME_CANNOT_NULL);
         this.username = username;
     }
 
@@ -66,7 +70,7 @@ public class User {
     }
 
     public void setName(String name) {
-        Preconditions.checkArgument(StringUtils.isEmpty(name), ErrorConstants.NAME_CANNOT_NULL);
+        Preconditions.checkArgument(!StringUtils.isEmpty(name), ErrorConstants.NAME_CANNOT_NULL);
         this.name = name;
     }
 
@@ -76,12 +80,12 @@ public class User {
 
     public void setBirthdate(LocalDate birthdate) {
         Preconditions.checkNotNull(birthdate, ErrorConstants.BIRTHDATE_CANNOT_NULL);
-        Preconditions.checkArgument(! birthdate.isAfter(LocalDate.now()), ErrorConstants.BIRTHDATE_GREATER_CURRENT_DATE);
+        Preconditions.checkArgument(!birthdate.isAfter(LocalDate.now()), ErrorConstants.BIRTHDATE_GREATER_CURRENT_DATE);
         this.birthdate = birthdate;
     }
 
     public List<Book> getBooks() {
-        return (List<Book>) Collections.unmodifiableCollection(books);
+        return Collections.unmodifiableList(books);
     }
 
     public void setBooks(List<Book> books) {

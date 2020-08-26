@@ -3,6 +3,7 @@ package wolox.training.constants;
 public class ErrorConstants {
 
     public static String BOOK_NOT_FOUND = "Book not found";
+    public static String USER_NOT_FOUND = "User not found";
     public static String GENRE_VALID_VALUE = "Genre cannot be null or empty";
     public static String AUTHOR_CANNOT_NULL = "Author cannot be null or empty";
     public static String IMAGE_CANNOT_NULL = "Image cannot be null or empty";

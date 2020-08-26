@@ -19,7 +19,7 @@ public class BookServiceImpl implements IBookService {
     }
 
     public Book findByAuthor(String author){
-        return bookRepository.findByAuthor(author).orElseThrow(BookNotFoundException::new);
+        return bookRepository.findFirstByAuthorIgnoreCase(author).orElseThrow(BookNotFoundException::new);
     }
 
     public void delete(Long id){

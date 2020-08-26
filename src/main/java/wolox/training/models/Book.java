@@ -1,6 +1,10 @@
 package wolox.training.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sun.istack.NotNull;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.Column;
@@ -52,7 +56,8 @@ public class Book {
     private String isbn;
 
     @ManyToMany(mappedBy = "books")
-    private List<User> users;
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    private List<User> users = new ArrayList<>();
 
     public Book(){
     }
@@ -146,10 +151,6 @@ public class Book {
     }
 
     public List<User> getUsers() {
-        return (List<User>) Collections.unmodifiableCollection(users);
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
+        return Collections.unmodifiableList(users);
     }
 }

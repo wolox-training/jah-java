@@ -27,6 +27,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public Iterable findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
     }

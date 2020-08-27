@@ -110,8 +110,17 @@ public class BookController {
         @RequestParam(required = false, defaultValue = "") String publisher,
         @RequestParam(required = false, defaultValue = "") String year,
         @RequestParam(required = false, defaultValue = "0") int pages,
-        @RequestParam(required = false, defaultValue = "") String isbn){
-        return bookService.findByAllFields(genre, author, image, title, subtitle, publisher, year, pages, isbn);
+        @RequestParam(required = false, defaultValue = "") String isbn,
+        Model model){
+        model.addAttribute("genre", genre);
+        model.addAttribute("author", author);
+        model.addAttribute("image", image);
+        model.addAttribute("title", title);
+        model.addAttribute("subtitle", subtitle);
+        model.addAttribute("publisher", pages);
+        model.addAttribute("year", year);
+        model.addAttribute("isbn", isbn);
+        return bookService.findByAllFields(model);
     }
 
 }

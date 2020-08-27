@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import wolox.training.exceptions.BookIdMismatchException;
 import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
@@ -68,9 +69,12 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public List<Book> findByAllFields(String genre, String author, String image, String title,
-        String subtitle, String publisher, String year, int pages, String isbn) {
-        return bookRepository.findByAllFields(genre, author, image, title, subtitle, publisher, year, pages, isbn).orElseThrow(BookNotFoundException::new);
+    public List<Book> findByAllFields(Model model) {
+        return bookRepository.findByAllFields(model.getAttribute("genre").toString(), model.getAttribute("author").toString(),
+            model.getAttribute("images").toString(), model.getAttribute("title").toString(),
+            model.getAttribute("subtitle").toString(), model.getAttribute("publisher").toString(),
+            model.getAttribute("year").toString(), (int)model.getAttribute("pages"),
+            model.getAttribute("isbn").toString()).orElseThrow(BookNotFoundException::new);
     }
 
     private Book convertBookDTO(BookDTO bookDTO){

@@ -1,5 +1,6 @@
 package wolox.training.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class BookDTO {
@@ -8,10 +9,13 @@ public class BookDTO {
     private String title;
     private String subtitle;
     private List<PublisherAuthorDTO> publishers;
+    @JsonProperty("publish_date")
     private String publishDate;
+    @JsonProperty("number_of_pages")
     private int pagesNumber;
     private List<PublisherAuthorDTO> authors;
-    private List<ImageDTO> images;
+    @JsonProperty("cover")
+    private ImageDTO images;
 
     public String getIsbn() {
         return isbn;
@@ -69,11 +73,11 @@ public class BookDTO {
         this.authors = authors;
     }
 
-    public List<ImageDTO> getImages() {
+    public ImageDTO getImages() {
         return images;
     }
 
-    public void setImages(List<ImageDTO> images) {
+    public void setImages(ImageDTO images) {
         this.images = images;
     }
 }

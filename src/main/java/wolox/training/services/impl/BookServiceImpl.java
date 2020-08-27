@@ -73,8 +73,12 @@ public class BookServiceImpl implements IBookService {
     @Override
     public Page<Book> findByAllFields(String genre, String author, String image, String title,
         String subtitle, String publisher, String year, int pages, String isbn, int page, int size, String sortBy, String order) {
-        PageRequest pageRequest = PageRequest.of(page, size, order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending());
+        PageRequest pageRequest = PageRequest.of(page, size, orderSorting(order, sortBy));
         return bookRepository.findByAllFields(pageRequest, genre, author, image, title, subtitle, publisher, year, pages, isbn);
+    }
+
+    private Sort orderSorting(String order, String sortBy){
+        return order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
     }
 
     private Book convertBookDTO(BookDTO bookDTO){

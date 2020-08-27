@@ -88,7 +88,7 @@ public class BookRepositoryIntegrationTest {
 
     @Test
     public void whenFindByPublisherAndGenreAndYearThenReturnBookList(){
-        List<Book> bookList = bookRepository.findByPublisherAndGenreAndYear(bookSaved.getPublisher(), bookSaved.getGenre(), bookSaved.getYear()).orElseGet(null);
+        List<Book> bookList = bookRepository.findByPublisherAndGenreAndYear(bookSaved.getPublisher(), bookSaved.getGenre(), null).orElseGet(null);
         Assertions.assertNotNull(bookList);
         Assertions.assertTrue(bookList.size() > 0);
     }

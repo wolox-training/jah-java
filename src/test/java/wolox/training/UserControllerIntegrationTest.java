@@ -5,9 +5,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import wolox.training.controllers.UserController;
 import wolox.training.exceptions.UserIdMismatchException;
 import wolox.training.exceptions.UserNotFoundException;
+import wolox.training.models.User;
 import wolox.training.services.IUserService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -31,10 +34,18 @@ public class UserControllerIntegrationTest {
     @MockBean
     private IUserService userService;
 
+    @MockBean
+    private User user;
+
     String requestJson;
 
     @Before
     public void setUp(){
+        LocalDate date = LocalDate.parse("1990-09-15");
+        user = new User();
+        user.setUsername("training1");
+        user.setName("Training 1");
+        user.setBirthdate(date);
         requestJson ="{\n"
             + "    \"username\": \"training1\",\n"
             + "    \"name\":\"Training 1\",\n"
@@ -50,6 +61,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void whenPostThenReturnCreated() throws Exception{
+        Mockito.when(userService.create(user)).thenReturn(user);
         mvc.perform(post("/api/users/")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))

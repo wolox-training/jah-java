@@ -70,7 +70,7 @@ public class BookServiceImpl implements IBookService {
         Book book = new Book();
         book.setGenre("-");
         book.setAuthor(bookDTO.getAuthors().get(0).getName());
-        book.setImage(bookDTO.getImages().get(0).getMedium());
+        book.setImage(bookDTO.getImage().getMedium());
         book.setTitle(bookDTO.getTitle());
         book.setSubtitle(bookDTO.getSubtitle());
         book.setPublisher(bookDTO.getPublishers().get(0).getName());

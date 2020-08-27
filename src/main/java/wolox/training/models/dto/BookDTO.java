@@ -15,7 +15,7 @@ public class BookDTO {
     private int pagesNumber;
     private List<PublisherAuthorDTO> authors;
     @JsonProperty("cover")
-    private ImageDTO images;
+    private ImageDTO image;
 
     public String getIsbn() {
         return isbn;
@@ -73,11 +73,11 @@ public class BookDTO {
         this.authors = authors;
     }
 
-    public ImageDTO getImages() {
-        return images;
+    public ImageDTO getImage() {
+        return image;
     }
 
-    public void setImages(ImageDTO images) {
-        this.images = images;
+    public void setImage(ImageDTO image) {
+        this.image = image;
     }
 }

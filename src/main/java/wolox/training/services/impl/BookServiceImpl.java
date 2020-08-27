@@ -9,6 +9,7 @@ import wolox.training.exceptions.BookIdMismatchException;
 import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
 import wolox.training.models.dto.BookDTO;
+import wolox.training.models.dto.BookParametersDTO;
 import wolox.training.repositories.BookRepository;
 import wolox.training.services.IBookService;
 import wolox.training.services.OpenLibraryService;
@@ -69,12 +70,10 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public List<Book> findByAllFields(Model model) {
-        return bookRepository.findByAllFields(model.getAttribute("genre").toString(), model.getAttribute("author").toString(),
-            model.getAttribute("images").toString(), model.getAttribute("title").toString(),
-            model.getAttribute("subtitle").toString(), model.getAttribute("publisher").toString(),
-            model.getAttribute("year").toString(), (int)model.getAttribute("pages"),
-            model.getAttribute("isbn").toString()).orElseThrow(BookNotFoundException::new);
+    public List<Book> findByAllFields(BookParametersDTO book) {
+        return bookRepository.findByAllFields(book.getGenre(), book.getAuthor(), book.getImage(),
+            book.getTitle(), book.getSubtitle(), book.getPublisher(), book.getYear(), book.getPages(),
+            book.getIsbn()).orElseThrow(BookNotFoundException::new);
     }
 
     private Book convertBookDTO(BookDTO bookDTO){

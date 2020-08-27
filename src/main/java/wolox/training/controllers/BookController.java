@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import wolox.training.models.Book;
+import wolox.training.models.dto.BookParametersDTO;
 import wolox.training.services.IBookService;
 
 @RestController
@@ -110,17 +111,9 @@ public class BookController {
         @RequestParam(required = false, defaultValue = "") String publisher,
         @RequestParam(required = false, defaultValue = "") String year,
         @RequestParam(required = false, defaultValue = "0") int pages,
-        @RequestParam(required = false, defaultValue = "") String isbn,
-        Model model){
-        model.addAttribute("genre", genre);
-        model.addAttribute("author", author);
-        model.addAttribute("image", image);
-        model.addAttribute("title", title);
-        model.addAttribute("subtitle", subtitle);
-        model.addAttribute("publisher", pages);
-        model.addAttribute("year", year);
-        model.addAttribute("isbn", isbn);
-        return bookService.findByAllFields(model);
+        @RequestParam(required = false, defaultValue = "") String isbn){
+        BookParametersDTO book = new BookParametersDTO(genre, author, image, title, subtitle, publisher, year, pages, isbn);
+        return bookService.findByAllFields(book);
     }
 
 }

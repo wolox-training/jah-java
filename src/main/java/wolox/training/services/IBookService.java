@@ -2,9 +2,8 @@ package wolox.training.services;
 
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.repository.query.Param;
-import org.springframework.ui.Model;
 import wolox.training.models.Book;
+import wolox.training.models.dto.BookParametersDTO;
 
 public interface IBookService {
 
@@ -22,6 +21,6 @@ public interface IBookService {
 
     Book createByOpenLibrary(String isbn);
 
-    List<Book> findByAllFields(Model model);
+    List<Book> findByAllFields(BookParametersDTO book);
 
 }

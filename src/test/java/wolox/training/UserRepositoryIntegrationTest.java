@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.models.Book;
@@ -17,15 +18,15 @@ import wolox.training.repositories.UserRepository;
 @DataJpaTest
 public class UserRepositoryIntegrationTest {
 
-    @Autowired
     private User user;
-    @Autowired
     private User userTest;
-    @Autowired
     private Book book;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TestEntityManager entityManager;
 
     @Before
     public void setUp(){
@@ -54,7 +55,7 @@ public class UserRepositoryIntegrationTest {
 
     @Test
     public void whenCreateThenReturnUser(){
-        User userSavedTest = userRepository.save(user);
+        User userSavedTest = entityManager.persistAndFlush(user);
         Assertions.assertTrue(userSavedTest != null);
         Assertions.assertEquals(user.getUsername(), userSavedTest.getUsername());
         Assertions.assertEquals(user.getName(), userSavedTest.getName());

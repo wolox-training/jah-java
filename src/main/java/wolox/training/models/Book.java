@@ -21,6 +21,7 @@ import wolox.training.constants.ErrorConstants;
 
 @Entity
 @Table(name = "book")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Book {
 
     @Id
@@ -56,7 +57,6 @@ public class Book {
     private String isbn;
 
     @ManyToMany(mappedBy = "books")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private List<User> users = new ArrayList<>();
 
     public Book(){

@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,17 +25,16 @@ import wolox.training.controllers.BookController;
 import wolox.training.exceptions.BookIdMismatchException;
 import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
-import wolox.training.repositories.BookRepository;
 import wolox.training.services.IBookService;
 
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 @WebMvcTest(BookController.class)
 public class BookControllerIntegrationTest {
 
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
+    @MockBean
     private IBookService bookService;
 
     @MockBean
@@ -79,6 +79,7 @@ public class BookControllerIntegrationTest {
 
     @Test
     public void whenPostThenReturnCreated() throws Exception{
+        Mockito.when(bookService.create(book)).thenReturn(book);
         mvc.perform(post("/api/books/")
         .contentType(MediaType.APPLICATION_JSON)
         .content(requestJson))

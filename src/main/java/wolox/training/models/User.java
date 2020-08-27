@@ -27,6 +27,7 @@ import wolox.training.exceptions.BookNotFoundInCollectionException;
 
 @Entity
 @Table(name="users")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
 
     @Id
@@ -45,7 +46,6 @@ public class User {
     private LocalDate birthdate;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private List<Book> books = new ArrayList<>();
 
     public User() {

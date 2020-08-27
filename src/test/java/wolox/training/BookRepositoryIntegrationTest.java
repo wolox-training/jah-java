@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
@@ -14,14 +15,14 @@ import wolox.training.repositories.BookRepository;
 @DataJpaTest
 public class BookRepositoryIntegrationTest {
 
-
-    @Autowired
     private Book book;
-    @Autowired
     private Book bookSaved;
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private TestEntityManager entityManager;
 
     @Before
     public void setUp(){
@@ -45,7 +46,7 @@ public class BookRepositoryIntegrationTest {
         bookSaved.setPages(120);
         bookSaved.setYear("2012");
         bookSaved.setIsbn("9876322321");
-        bookSaved = bookRepository.save(bookSaved);
+        entityManager.persistAndFlush(bookSaved);
     }
 
     @Test

@@ -3,6 +3,7 @@ package wolox.training.controllers;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import wolox.training.models.Book;
+import wolox.training.models.dto.ResponsePagingData;
 import wolox.training.services.IBookService;
 
 @RestController
@@ -102,7 +104,7 @@ public class BookController {
      * @return Book list or Book not found
      */
     @GetMapping
-    public List<Book> findByAllFields(@RequestParam(required = false, defaultValue = "") String genre,
+    public ResponsePagingData<List<Book>> findByAllFields(@RequestParam(required = false, defaultValue = "") String genre,
         @RequestParam(required = false, defaultValue = "") String author,
         @RequestParam(required = false, defaultValue = "") String image,
         @RequestParam(required = false, defaultValue = "") String title,
@@ -110,8 +112,15 @@ public class BookController {
         @RequestParam(required = false, defaultValue = "") String publisher,
         @RequestParam(required = false, defaultValue = "") String year,
         @RequestParam(required = false, defaultValue = "0") int pages,
-        @RequestParam(required = false, defaultValue = "") String isbn){
-        return bookService.findByAllFields(genre, author, image, title, subtitle, publisher, year, pages, isbn);
+        @RequestParam(required = false, defaultValue = "") String isbn,
+        @RequestParam(required = false, defaultValue = "0") int page,
+        @RequestParam(required = false, defaultValue = "10") int limit,
+        @RequestParam(required = false, defaultValue = "id") String sortBy,
+        @RequestParam(required = false, defaultValue = "asc") String order){
+        Page<Book> resultPage = bookService.findByAllFields(genre, author, image, title, subtitle, publisher, year, pages, isbn, page, limit, sortBy, order);
+        return new ResponsePagingData<>(limit, limit, 0, resultPage.getTotalPages(), resultPage.getTotalElements(),
+            resultPage.getNumber() - 1, resultPage.getNumber(), resultPage.getNumber() == resultPage.getTotalPages() ? resultPage
+            .getNumber() : resultPage.getNumber() + 1, resultPage.getContent());
     }
 
 }

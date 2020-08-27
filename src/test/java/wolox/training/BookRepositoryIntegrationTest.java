@@ -1,5 +1,6 @@
 package wolox.training;
 
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -83,6 +84,16 @@ public class BookRepositoryIntegrationTest {
     public void whenCreateWithNegativePages_thenThrowIllegalArgumentException(){
         book.setPages(-1);
         bookRepository.save(book);
+    }
+
+    @Test
+    public void whenFindByAllFieldsExcludeSomeoneThenReturnBook(){
+        List<Book> booksFound = bookRepository.findByAllFields(bookSaved.getGenre(),bookSaved.getAuthor(),null,
+            null,null,bookSaved.getPublisher(),null,
+            -1,null).orElseGet(null);
+
+        Assertions.assertNotNull(booksFound);
+        Assertions.assertTrue(booksFound.size() > 0);
     }
 
 }

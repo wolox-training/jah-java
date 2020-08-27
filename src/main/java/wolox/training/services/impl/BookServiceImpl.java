@@ -1,5 +1,6 @@
 package wolox.training.services.impl;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,11 +67,17 @@ public class BookServiceImpl implements IBookService {
         }
     }
 
+    @Override
+    public List<Book> findByAllFields(String genre, String author, String image, String title,
+        String subtitle, String publisher, String year, int pages, String isbn) {
+        return bookRepository.findByAllFields(genre, author, image, title, subtitle, publisher, year, pages, isbn).orElseThrow(BookNotFoundException::new);
+    }
+
     private Book convertBookDTO(BookDTO bookDTO){
         Book book = new Book();
         book.setGenre("-");
         book.setAuthor(bookDTO.getAuthors().get(0).getName());
-        book.setImage(bookDTO.getImages().get(0).getMedium());
+        book.setImage(bookDTO.getImage().getMedium());
         book.setTitle(bookDTO.getTitle());
         book.setSubtitle(bookDTO.getSubtitle());
         book.setPublisher(bookDTO.getPublishers().get(0).getName());

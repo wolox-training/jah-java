@@ -1,5 +1,6 @@
 package wolox.training.controllers;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -85,6 +86,32 @@ public class BookController {
         }else{
             return new ResponseEntity<>(bookService.createByOpenLibrary(isbn), HttpStatus.CREATED);
         }
+    }
+
+    /**
+     * Service that find book list according to entered parameters
+     * @param genre
+     * @param author
+     * @param image
+     * @param title
+     * @param subtitle
+     * @param publisher
+     * @param year
+     * @param pages
+     * @param isbn
+     * @return Book list or Book not found
+     */
+    @GetMapping
+    public List<Book> findByAllFields(@RequestParam(required = false, defaultValue = "") String genre,
+        @RequestParam(required = false, defaultValue = "") String author,
+        @RequestParam(required = false, defaultValue = "") String image,
+        @RequestParam(required = false, defaultValue = "") String title,
+        @RequestParam(required = false, defaultValue = "") String subtitle,
+        @RequestParam(required = false, defaultValue = "") String publisher,
+        @RequestParam(required = false, defaultValue = "") String year,
+        @RequestParam(required = false, defaultValue = "0") int pages,
+        @RequestParam(required = false, defaultValue = "") String isbn){
+        return bookService.findByAllFields(genre, author, image, title, subtitle, publisher, year, pages, isbn);
     }
 
 }

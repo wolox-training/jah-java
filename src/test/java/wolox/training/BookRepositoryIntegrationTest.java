@@ -1,5 +1,7 @@
 package wolox.training;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,32 +60,42 @@ public class BookRepositoryIntegrationTest {
 
     @Test
     public void whenCreateWithoutGenreThenThrowIllegalArgumentException(){
-        book.setGenre(null);
-        bookRepository.save(book);
+        assertThrows(IllegalArgumentException.class, () -> {
+            book.setGenre(null);
+            bookRepository.save(book);
+        });
     }
 
     @Test
     public void whenCreateWithoutAuthorThenThrowIllegalArgumentException(){
-        book.setAuthor(null);
-        bookRepository.save(book);
+        assertThrows(IllegalArgumentException.class, () -> {
+            book.setAuthor(null);
+            bookRepository.save(book);
+        });
     }
 
     @Test
     public void whenCreateWithoutYearThenThrowIllegalArgumentException(){
-        book.setYear(null);
-        bookRepository.save(book);
+        assertThrows(IllegalArgumentException.class, () -> {
+            book.setYear(null);
+            bookRepository.save(book);
+        });
     }
 
     @Test
     public void whenCreateWithoutIsbn_thenThrowIllegalArgumentException(){
-        book.setIsbn(null);
-        bookRepository.save(book);
+        assertThrows(IllegalArgumentException.class, () -> {
+            book.setIsbn(null);
+            bookRepository.save(book);
+        });
     }
 
     @Test
     public void whenCreateWithNegativePages_thenThrowIllegalArgumentException(){
-        book.setPages(-1);
-        bookRepository.save(book);
+        assertThrows(IllegalArgumentException.class, () -> {
+            book.setPages(-1);
+            bookRepository.save(book);
+        });
     }
 
 }

@@ -1,5 +1,7 @@
 package wolox.training;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.time.LocalDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,31 +66,42 @@ public class UserRepositoryIntegrationTest {
 
     @Test
     public void whenCreateWithoutUsernameThenThrowIllegalArgumentException(){
-        userTest.setUsername(null);
-        userRepository.save(userTest);
+        assertThrows(IllegalArgumentException.class, () ->{
+            userTest.setUsername(null);
+            userRepository.save(userTest);
+        });
+
     }
 
     @Test
     public void whenCreateWithoutNameThenThrowIllegalArgumentException(){
-        userTest.setName(null);
-        userRepository.save(userTest);
+        assertThrows(IllegalArgumentException.class, () ->{
+            userTest.setName(null);
+            userRepository.save(userTest);
+        });
     }
 
     @Test
     public void whenCreateWithoutBirthdateThenThrowIllegalArgumentException(){
-        userTest.setBirthdate(null);
-        userRepository.save(userTest);
+        assertThrows(IllegalArgumentException.class, () ->{
+            userTest.setBirthdate(null);
+            userRepository.save(userTest);
+        });
     }
 
     @Test
     public void whenCreateWithNullBooksThenThrowNullPointerException(){
-        userTest.setBooks(null);
-        userRepository.save(userTest);
+        assertThrows(IllegalArgumentException.class, () ->{
+            userTest.setBooks(null);
+            userRepository.save(userTest);
+        });
     }
 
     @Test
     public void whenAddBookWithExistingBookThenThrowBookAlreadyOwnedException(){
-        userTest.addBook(book);
+        assertThrows(BookAlreadyOwnedException.class, () -> {
+            userTest.addBook(book);
+        });
     }
 
 }

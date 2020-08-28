@@ -7,10 +7,12 @@ import java.util.Optional;
 import jdk.internal.joptsimple.internal.Strings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import wolox.training.constants.Constants;
 import wolox.training.models.dto.BookDTO;
 
+@Service
 public class OpenLibraryService {
 
     @Value("{$use.wiremock}")

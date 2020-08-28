@@ -77,7 +77,7 @@ public class BookDTO {
         return image;
     }
 
-    public void setImages(ImageDTO image) {
+    public void setImage(ImageDTO image) {
         this.image = image;
     }
 }

@@ -1,7 +1,7 @@
 package wolox.training;
 
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -98,6 +98,13 @@ public class BookRepositoryTest {
             book.setPages(-1);
             bookRepository.save(book);
         });
+    }
+
+    @Test
+    public void whenFindByPublisherAndGenreAndYearThenReturnBookList(){
+        List<Book> bookList = bookRepository.findByPublisherAndGenreAndYear(bookSaved.getPublisher(), null, bookSaved.getYear()).orElseGet(null);
+        Assertions.assertNotNull(bookList);
+        Assertions.assertTrue(bookList.size() > 0);
     }
 
     @Test

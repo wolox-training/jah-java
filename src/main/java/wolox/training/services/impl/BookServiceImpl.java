@@ -7,10 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import wolox.training.exceptions.BookIdMismatchException;
 import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
 import wolox.training.models.dto.BookDTO;
+import wolox.training.models.dto.BookParametersDTO;
 import wolox.training.repositories.BookRepository;
 import wolox.training.services.IBookService;
 import wolox.training.services.OpenLibraryService;
@@ -71,10 +73,11 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public Page<Book> findByAllFields(String genre, String author, String image, String title,
-        String subtitle, String publisher, String year, int pages, String isbn, int page, int size, String sortBy, String order) {
+    public Page<Book> findByAllFields(BookParametersDTO book, int page, int size, String sortBy, String order) {
         PageRequest pageRequest = PageRequest.of(page, size, orderSorting(order, sortBy));
-        return bookRepository.findByAllFields(pageRequest, genre, author, image, title, subtitle, publisher, year, pages, isbn);
+        return bookRepository.findByAllFields(pageRequest, book.getGenre(), book.getAuthor(), book.getImage(),
+            book.getTitle(), book.getSubtitle(), book.getPublisher(), book.getYear(), book.getPages(),
+            book.getIsbn());
     }
 
     private Sort orderSorting(String order, String sortBy){

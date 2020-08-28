@@ -1,5 +1,9 @@
 package wolox.training.models.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
 public class ResponsePagingData<T> {
 
     protected int count;
@@ -29,75 +33,4 @@ public class ResponsePagingData<T> {
         this.page = page;
     }
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
-
-    public int getTotalPages() {
-        return totalPages;
-    }
-
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    public long getTotalCount() {
-        return totalCount;
-    }
-
-    public void setTotalCount(long totalCount) {
-        this.totalCount = totalCount;
-    }
-
-    public int getPreviousPage() {
-        return previousPage;
-    }
-
-    public void setPreviousPage(int previousPage) {
-        this.previousPage = previousPage;
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
-    }
-
-    public int getNextPage() {
-        return nextPage;
-    }
-
-    public void setNextPage(int nextPage) {
-        this.nextPage = nextPage;
-    }
-
-    public T getPage() {
-        return page;
-    }
-
-    public void setPage(T page) {
-        this.page = page;
-    }
 }

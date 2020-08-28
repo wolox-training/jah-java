@@ -1,18 +1,12 @@
 package wolox.training.models.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class PublisherAuthorDTO {
 
     private String name;
 
-    public PublisherAuthorDTO(){
-
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

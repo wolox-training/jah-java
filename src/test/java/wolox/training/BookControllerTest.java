@@ -26,7 +26,7 @@ import wolox.training.models.Book;
 import wolox.training.services.IBookService;
 
 @WebMvcTest(BookController.class)
-public class BookControllerIntegrationTest {
+public class BookControllerTest {
 
     @Autowired
     private MockMvc mvc;

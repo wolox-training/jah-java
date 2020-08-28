@@ -15,7 +15,7 @@ import wolox.training.repositories.BookRepository;
 
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest
-public class BookRepositoryIntegrationTest {
+public class BookRepositoryTest {
 
     private Book book;
     private Book bookSaved;

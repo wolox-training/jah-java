@@ -30,7 +30,7 @@ import wolox.training.models.User;
 import wolox.training.services.IUserService;
 
 @WebMvcTest(UserController.class)
-public class UserControllerIntegrationTest {
+public class UserControllerTest {
 
     @Autowired
     private MockMvc mvc;

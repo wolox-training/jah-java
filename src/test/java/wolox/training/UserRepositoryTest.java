@@ -18,7 +18,7 @@ import wolox.training.repositories.UserRepository;
 
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest
-public class UserRepositoryIntegrationTest {
+public class UserRepositoryTest {
 
     private User user;
     private User userTest;

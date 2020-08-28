@@ -1,34 +1,37 @@
 package wolox.training;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.time.LocalDate;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.models.Book;
 import wolox.training.models.User;
 import wolox.training.repositories.UserRepository;
 
-@RunWith(SpringRunner.class)
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest
-public class UserRepositoryIntegrationTest {
+public class UserRepositoryTest {
 
-    @Autowired
     private User user;
-    @Autowired
     private User userTest;
-    @Autowired
     private Book book;
 
     @Autowired
     private UserRepository userRepository;
 
-    @Before
+    @Autowired
+    private TestEntityManager entityManager;
+
+    @BeforeEach
     public void setUp(){
         LocalDate date = LocalDate.parse("1990-01-08");
         user = new User();
@@ -55,40 +58,51 @@ public class UserRepositoryIntegrationTest {
 
     @Test
     public void whenCreateThenReturnUser(){
-        User userSavedTest = userRepository.save(user);
+        User userSavedTest = entityManager.persistAndFlush(user);
         Assertions.assertTrue(userSavedTest != null);
         Assertions.assertEquals(user.getUsername(), userSavedTest.getUsername());
         Assertions.assertEquals(user.getName(), userSavedTest.getName());
         Assertions.assertEquals(user.getBirthdate(), userSavedTest.getBirthdate());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithoutUsernameThenThrowIllegalArgumentException(){
-        userTest.setUsername(null);
-        userRepository.save(userTest);
+        assertThrows(IllegalArgumentException.class, () ->{
+            userTest.setUsername(null);
+            userRepository.save(userTest);
+        });
+
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithoutNameThenThrowIllegalArgumentException(){
-        userTest.setName(null);
-        userRepository.save(userTest);
+        assertThrows(IllegalArgumentException.class, () ->{
+            userTest.setName(null);
+            userRepository.save(userTest);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void whenCreateWithoutBirthdateThenThrowIllegalArgumentException(){
-        userTest.setBirthdate(null);
-        userRepository.save(userTest);
+        assertThrows(IllegalArgumentException.class, () ->{
+            userTest.setBirthdate(null);
+            userRepository.save(userTest);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void whenCreateWithNullBooksThenThrowNullPointerException(){
-        userTest.setBooks(null);
-        userRepository.save(userTest);
+        assertThrows(IllegalArgumentException.class, () ->{
+            userTest.setBooks(null);
+            userRepository.save(userTest);
+        });
     }
 
-    @Test(expected = BookAlreadyOwnedException.class)
+    @Test
     public void whenAddBookWithExistingBookThenThrowBookAlreadyOwnedException(){
-        userTest.addBook(book);
+        assertThrows(BookAlreadyOwnedException.class, () -> {
+            userTest.addBook(book);
+        });
     }
 
     @Test

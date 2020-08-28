@@ -1,12 +1,15 @@
 package wolox.training.services.impl;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import wolox.training.exceptions.BookIdMismatchException;
 import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
 import wolox.training.models.dto.BookDTO;
+import wolox.training.models.dto.BookParametersDTO;
 import wolox.training.repositories.BookRepository;
 import wolox.training.services.IBookService;
 import wolox.training.services.OpenLibraryService;
@@ -66,11 +69,18 @@ public class BookServiceImpl implements IBookService {
         }
     }
 
+    @Override
+    public List<Book> findByAllFields(BookParametersDTO book) {
+        return bookRepository.findByAllFields(book.getGenre(), book.getAuthor(), book.getImage(),
+            book.getTitle(), book.getSubtitle(), book.getPublisher(), book.getYear(), book.getPages(),
+            book.getIsbn()).orElseThrow(BookNotFoundException::new);
+    }
+
     private Book convertBookDTO(BookDTO bookDTO){
         Book book = new Book();
         book.setGenre("-");
         book.setAuthor(bookDTO.getAuthors().get(0).getName());
-        book.setImage(bookDTO.getImages().get(0).getMedium());
+        book.setImage(bookDTO.getImage().getMedium());
         book.setTitle(bookDTO.getTitle());
         book.setSubtitle(bookDTO.getSubtitle());
         book.setPublisher(bookDTO.getPublishers().get(0).getName());

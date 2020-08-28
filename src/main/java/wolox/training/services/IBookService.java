@@ -1,7 +1,9 @@
 package wolox.training.services;
 
+import java.util.List;
 import java.util.Optional;
 import wolox.training.models.Book;
+import wolox.training.models.dto.BookParametersDTO;
 
 public interface IBookService {
 
@@ -18,5 +20,7 @@ public interface IBookService {
     Optional<Book> findByIsbn(String isbn);
 
     Book createByOpenLibrary(String isbn);
+
+    List<Book> findByAllFields(BookParametersDTO book);
 
 }

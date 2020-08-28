@@ -77,7 +77,7 @@ public class BookController {
      * @param isbn
      * @return Book object
      */
-    @GetMapping("/author/{author}")
+    @GetMapping("/isbn/{isbn}")
     public ResponseEntity<Book> findByIsbn(@PathVariable String isbn){
         Optional<Book> book = bookService.findByIsbn(isbn);
         if(book.isPresent()){

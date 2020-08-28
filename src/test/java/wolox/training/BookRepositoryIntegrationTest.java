@@ -1,17 +1,17 @@
 package wolox.training;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
 
-@RunWith(SpringRunner.class)
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest
 public class BookRepositoryIntegrationTest {
 
@@ -24,7 +24,7 @@ public class BookRepositoryIntegrationTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    @Before
+    @BeforeEach
     public void setUp(){
         book = new Book();
         book.setGenre("Genre");
@@ -56,31 +56,31 @@ public class BookRepositoryIntegrationTest {
         Assertions.assertEquals(bookSaved.getAuthor(), bookFound.getAuthor());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithoutGenreThenThrowIllegalArgumentException(){
         book.setGenre(null);
         bookRepository.save(book);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithoutAuthorThenThrowIllegalArgumentException(){
         book.setAuthor(null);
         bookRepository.save(book);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithoutYearThenThrowIllegalArgumentException(){
         book.setYear(null);
         bookRepository.save(book);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithoutIsbn_thenThrowIllegalArgumentException(){
         book.setIsbn(null);
         bookRepository.save(book);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithNegativePages_thenThrowIllegalArgumentException(){
         book.setPages(-1);
         bookRepository.save(book);

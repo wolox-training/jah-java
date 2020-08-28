@@ -1,20 +1,20 @@
 package wolox.training;
 
 import java.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.models.Book;
 import wolox.training.models.User;
 import wolox.training.repositories.UserRepository;
 
-@RunWith(SpringRunner.class)
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest
 public class UserRepositoryIntegrationTest {
 
@@ -28,7 +28,7 @@ public class UserRepositoryIntegrationTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    @Before
+    @BeforeEach
     public void setUp(){
         LocalDate date = LocalDate.parse("1990-01-08");
         user = new User();
@@ -62,31 +62,31 @@ public class UserRepositoryIntegrationTest {
         Assertions.assertEquals(user.getBirthdate(), userSavedTest.getBirthdate());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithoutUsernameThenThrowIllegalArgumentException(){
         userTest.setUsername(null);
         userRepository.save(userTest);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithoutNameThenThrowIllegalArgumentException(){
         userTest.setName(null);
         userRepository.save(userTest);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void whenCreateWithoutBirthdateThenThrowIllegalArgumentException(){
         userTest.setBirthdate(null);
         userRepository.save(userTest);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void whenCreateWithNullBooksThenThrowNullPointerException(){
         userTest.setBooks(null);
         userRepository.save(userTest);
     }
 
-    @Test(expected = BookAlreadyOwnedException.class)
+    @Test
     public void whenAddBookWithExistingBookThenThrowBookAlreadyOwnedException(){
         userTest.addBook(book);
     }

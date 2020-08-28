@@ -1,30 +1,34 @@
 package wolox.training;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.util.NestedServletException;
 import wolox.training.controllers.UserController;
+import wolox.training.exceptions.BookIdMismatchException;
+import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.exceptions.UserIdMismatchException;
 import wolox.training.exceptions.UserNotFoundException;
 import wolox.training.models.User;
 import wolox.training.services.IUserService;
 
-@RunWith(MockitoJUnitRunner.class)
 @WebMvcTest(UserController.class)
 public class UserControllerIntegrationTest {
 
@@ -39,7 +43,7 @@ public class UserControllerIntegrationTest {
 
     String requestJson;
 
-    @Before
+    @BeforeEach
     public void setUp(){
         LocalDate date = LocalDate.parse("1990-09-15");
         user = new User();
@@ -53,10 +57,14 @@ public class UserControllerIntegrationTest {
             + "}";
     }
 
-    @Test(expected = UserNotFoundException.class)
-    public void whenFindByUsernameWithUserNotFoundThenReturnException() throws Throwable{
-        mvc.perform(get("/api/books/username/training2").contentType(MediaType.APPLICATION_JSON))
-        .andExpect(MockMvcResultMatchers.status().isNotFound());
+    @Test
+    public void whenFindByAuthorThenReturnBook() throws Throwable{
+        Mockito.when(userService.findByUsername(eq("training1"))).thenReturn(user);
+            mvc.perform(get("/api/users/username/training1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(requestJson));
+
     }
 
     @Test
@@ -65,21 +73,24 @@ public class UserControllerIntegrationTest {
         mvc.perform(post("/api/users/")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
-            .andExpect(MockMvcResultMatchers.status().isCreated());
+            .andExpect(status().isCreated());
     }
 
-    @Test(expected = UserNotFoundException.class)
+    @Test
     public void whenDeleteWithUnknownIdThenReturnException() throws Throwable{
-        mvc.perform(delete("/api/users/55")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(requestJson));
+        Mockito.doThrow(BookNotFoundException.class).when(userService).delete(5L);
+        mvc.perform(delete("/api/users/5")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
-    @Test(expected = UserIdMismatchException.class)
+    @Test
     public void whenUpdateWithIdMismatchThenReturnException() throws Throwable{
+        Mockito.doThrow(BookIdMismatchException.class).when(userService).update(anyLong(), any());
         mvc.perform(put("/api/users/55")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(requestJson));
+            .content(requestJson))
+            .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
 

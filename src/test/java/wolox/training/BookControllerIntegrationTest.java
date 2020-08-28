@@ -1,24 +1,22 @@
 package wolox.training;
 
-import static org.mockito.BDDMockito.given;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.ArgumentMatchers.eq;
 
-import java.util.Random;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import wolox.training.controllers.BookController;
@@ -27,7 +25,6 @@ import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
 import wolox.training.services.IBookService;
 
-@RunWith(MockitoJUnitRunner.class)
 @WebMvcTest(BookController.class)
 public class BookControllerIntegrationTest {
 
@@ -42,7 +39,7 @@ public class BookControllerIntegrationTest {
 
     private String requestJson;
 
-    @Before
+    @BeforeEach
     public void setUp(){
         book = new Book();
         book.setGenre("Genre");
@@ -86,18 +83,21 @@ public class BookControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
-    @Test(expected = BookNotFoundException.class)
+    @Test
     public void whenDeleteWithUnknownIdThenReturnException() throws Throwable{
+        Mockito.doThrow(BookNotFoundException.class).when(bookService).delete(55L);
         mvc.perform(delete("/api/books/55")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(requestJson));
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
-    @Test(expected = BookIdMismatchException.class)
+    @Test
     public void whenUpdateWithIdMismatchThenReturnException() throws Throwable{
+        Mockito.doThrow(BookIdMismatchException.class).when(bookService).update(anyLong(), any());
         mvc.perform(put("/api/books/55")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(requestJson));
+            .content(requestJson))
+            .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
 }

@@ -1,12 +1,15 @@
 package wolox.training.services.impl;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wolox.training.exceptions.BookIdMismatchException;
 import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
+import wolox.training.models.dto.BookDTO;
 import wolox.training.repositories.BookRepository;
 import wolox.training.services.IBookService;
+import wolox.training.services.OpenLibraryService;
 
 @Service
 public class BookServiceImpl implements IBookService {
@@ -14,12 +17,15 @@ public class BookServiceImpl implements IBookService {
     @Autowired
     BookRepository bookRepository;
 
+    @Autowired
+    OpenLibraryService openLibraryService;
+
     public Book create(Book book){
         return bookRepository.save(book);
     }
 
     public Book findByAuthor(String author){
-        return bookRepository.findByAuthor(author).orElseThrow(BookNotFoundException::new);
+        return bookRepository.findFirstByAuthorIgnoreCase(author).orElseThrow(BookNotFoundException::new);
     }
 
     public void delete(Long id){
@@ -41,6 +47,37 @@ public class BookServiceImpl implements IBookService {
     public Book findById(Long id) {
         return bookRepository.findById(id)
             .orElseThrow(BookNotFoundException::new);
+    }
+
+    @Override
+    public Optional<Book> findByIsbn(String isbn) {
+        return bookRepository.findByIsbn(isbn);
+    }
+
+    @Override
+    public Book createByOpenLibrary(String isbn) {
+        try {
+            BookDTO bookDTO = openLibraryService.bookInfo(isbn)
+                .orElseThrow(BookNotFoundException::new);
+            Book bookLibrary = convertBookDTO(bookDTO);
+            return bookRepository.save(bookLibrary);
+        } catch (Exception e) {
+            throw new BookNotFoundException();
+        }
+    }
+
+    private Book convertBookDTO(BookDTO bookDTO){
+        Book book = new Book();
+        book.setGenre("-");
+        book.setAuthor(bookDTO.getAuthors().get(0).getName());
+        book.setImage(bookDTO.getImage().getMedium());
+        book.setTitle(bookDTO.getTitle());
+        book.setSubtitle(bookDTO.getSubtitle());
+        book.setPublisher(bookDTO.getPublishers().get(0).getName());
+        book.setYear(bookDTO.getPublishDate());
+        book.setPages(bookDTO.getPagesNumber());
+        book.setIsbn(bookDTO.getIsbn());
+        return book;
     }
 
 }

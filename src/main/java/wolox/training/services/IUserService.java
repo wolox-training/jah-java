@@ -7,6 +7,8 @@ public interface IUserService {
 
     User create(User user);
 
+    Iterable findAll();
+
     User findByUsername(String username);
 
     void delete(Long id);

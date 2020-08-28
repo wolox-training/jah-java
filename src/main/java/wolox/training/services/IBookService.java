@@ -1,5 +1,6 @@
 package wolox.training.services;
 
+import java.util.Optional;
 import wolox.training.models.Book;
 
 public interface IBookService {
@@ -13,5 +14,9 @@ public interface IBookService {
     Book update(Long id, Book book);
 
     Book findById(Long id);
+
+    Optional<Book> findByIsbn(String isbn);
+
+    Book createByOpenLibrary(String isbn);
 
 }

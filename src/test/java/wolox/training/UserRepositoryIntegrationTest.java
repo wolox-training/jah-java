@@ -1,6 +1,7 @@
 package wolox.training;
 
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -88,6 +89,15 @@ public class UserRepositoryIntegrationTest {
     @Test(expected = BookAlreadyOwnedException.class)
     public void whenAddBookWithExistingBookThenThrowBookAlreadyOwnedException(){
         userTest.addBook(book);
+    }
+
+    @Test
+    public void whenFindByBirthdateBetweenAndNameContainingIgnoreCaseThenReturnUserList(){
+        LocalDate startDate = LocalDate.parse("1990-01-07");
+        LocalDate endDate = LocalDate.parse("1990-01-09");
+        List<User> userList = userRepository.findByBirthdateBetweenAndNameContainingIgnoreCase(startDate, endDate, "rain").orElseGet(null);
+        Assertions.assertNotNull(userList);
+        Assertions.assertTrue(userList.size() > 0);
     }
 
 }

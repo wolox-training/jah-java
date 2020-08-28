@@ -46,13 +46,14 @@ public interface BookRepository extends JpaRepository<Book, Long> {
         + " AND (:subtitle is '' OR :subtitle is null OR b.subtitle = :subtitle)"
         + " AND (:publisher is '' OR :publisher is null OR b.publisher = :publisher)"
         + " AND (:year is '' OR :year is null OR b.year = :year)"
-        + " AND (:pages is '' OR CAST(:pages as int) <= 0 OR CAST(b.pages as int) = :pages)"
+        + " AND (CAST(:pages as int) <= 0 OR CAST(b.pages as int) = :pages)"
         + " AND (:isbn is '' OR :isbn is null OR b.isbn = :isbn)")
     Optional<List<Book>> findByAllFields(@Param("genre") String genre,
         @Param("author") String author, @Param("image") String image,
         @Param("title") String title, @Param("subtitle") String subtitle,
         @Param("publisher") String publisher, @Param("year") String year,
         @Param("pages") int pages, @Param("isbn") String isbn);
+
     /**
      * Method that find a book list according to the publisher, genre and year entered parameter
      * @param publisher

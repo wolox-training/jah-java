@@ -103,14 +103,14 @@ public class BookController {
      * @return Book list or Book not found
      */
     @GetMapping
-    public List<Book> findByAllFields(@RequestParam(required = false, defaultValue = "") String genre,
+    public List<Book> findByAllFields(@RequestParam(required = false, defaultValue = "-") String genre,
         @RequestParam(required = false, defaultValue = "") String author,
         @RequestParam(required = false, defaultValue = "") String image,
         @RequestParam(required = false, defaultValue = "") String title,
         @RequestParam(required = false, defaultValue = "") String subtitle,
         @RequestParam(required = false, defaultValue = "") String publisher,
         @RequestParam(required = false, defaultValue = "") String year,
-        @RequestParam(required = false, defaultValue = "0") int pages,
+        @RequestParam(required = false, defaultValue = "") Integer pages,
         @RequestParam(required = false, defaultValue = "") String isbn){
         BookParametersDTO book = new BookParametersDTO(genre, author, image, title, subtitle, publisher, year, pages, isbn);
         return bookService.findByAllFields(book);

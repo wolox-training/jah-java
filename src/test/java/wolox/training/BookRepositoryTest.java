@@ -1,31 +1,34 @@
 package wolox.training;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
 
-@RunWith(SpringRunner.class)
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest
-public class BookRepositoryIntegrationTest {
+public class BookRepositoryTest {
 
-
-    @Autowired
     private Book book;
-    @Autowired
     private Book bookSaved;
 
     @Autowired
     private BookRepository bookRepository;
 
-    @Before
+    @Autowired
+    private TestEntityManager entityManager;
+
+    @BeforeEach
     public void setUp(){
         book = new Book();
         book.setGenre("Genre");
@@ -47,7 +50,7 @@ public class BookRepositoryIntegrationTest {
         bookSaved.setPages(120);
         bookSaved.setYear("2012");
         bookSaved.setIsbn("9876322321");
-        bookSaved = bookRepository.save(bookSaved);
+        entityManager.persistAndFlush(bookSaved);
     }
 
     @Test
@@ -57,34 +60,44 @@ public class BookRepositoryIntegrationTest {
         Assertions.assertEquals(bookSaved.getAuthor(), bookFound.getAuthor());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithoutGenreThenThrowIllegalArgumentException(){
-        book.setGenre(null);
-        bookRepository.save(book);
+        assertThrows(IllegalArgumentException.class, () -> {
+            book.setGenre(null);
+            bookRepository.save(book);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithoutAuthorThenThrowIllegalArgumentException(){
-        book.setAuthor(null);
-        bookRepository.save(book);
+        assertThrows(IllegalArgumentException.class, () -> {
+            book.setAuthor(null);
+            bookRepository.save(book);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithoutYearThenThrowIllegalArgumentException(){
-        book.setYear(null);
-        bookRepository.save(book);
+        assertThrows(IllegalArgumentException.class, () -> {
+            book.setYear(null);
+            bookRepository.save(book);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithoutIsbn_thenThrowIllegalArgumentException(){
-        book.setIsbn(null);
-        bookRepository.save(book);
+        assertThrows(IllegalArgumentException.class, () -> {
+            book.setIsbn(null);
+            bookRepository.save(book);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCreateWithNegativePages_thenThrowIllegalArgumentException(){
-        book.setPages(-1);
-        bookRepository.save(book);
+        assertThrows(IllegalArgumentException.class, () -> {
+            book.setPages(-1);
+            bookRepository.save(book);
+        });
     }
 
     @Test

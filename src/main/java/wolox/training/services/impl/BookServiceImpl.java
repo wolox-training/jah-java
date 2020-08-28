@@ -3,6 +3,9 @@ package wolox.training.services.impl;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import wolox.training.exceptions.BookIdMismatchException;
@@ -70,10 +73,15 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public List<Book> findByAllFields(BookParametersDTO book) {
-        return bookRepository.findByAllFields(book.getGenre(), book.getAuthor(), book.getImage(),
+    public Page<Book> findByAllFields(BookParametersDTO book, int page, int size, String sortBy, String order) {
+        PageRequest pageRequest = PageRequest.of(page, size, orderSorting(order, sortBy));
+        return bookRepository.findByAllFields(pageRequest, book.getGenre(), book.getAuthor(), book.getImage(),
             book.getTitle(), book.getSubtitle(), book.getPublisher(), book.getYear(), book.getPages(),
-            book.getIsbn()).orElseThrow(BookNotFoundException::new);
+            book.getIsbn());
+    }
+
+    private Sort orderSorting(String order, String sortBy){
+        return order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
     }
 
     private Book convertBookDTO(BookDTO bookDTO){

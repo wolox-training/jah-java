@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
@@ -54,7 +56,7 @@ public class BookRepositoryTest {
     @Test
     public void whenFindByAuthorThenReturnBook(){
         Book bookFound = bookRepository.findFirstByAuthorIgnoreCase(bookSaved.getAuthor()).orElse(null);
-        Assertions.assertTrue(bookFound != null);
+        Assertions.assertNotNull(bookFound);
         Assertions.assertEquals(bookSaved.getAuthor(), bookFound.getAuthor());
     }
 
@@ -106,13 +108,14 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void whenFindByAllFieldsExcludeSomeoneThenReturnBook(){
-        List<Book> booksFound = bookRepository.findByAllFields(bookSaved.getGenre(),bookSaved.getAuthor(),null,
+    public void whenFindByAllFieldsExcludeSomeoneThenReturnBookList(){
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<Book> booksFound = bookRepository.findByAllFields(pageRequest, bookSaved.getGenre(),bookSaved.getAuthor(),null,
             null,null,bookSaved.getPublisher(),null,
-            -1,null).orElseGet(null);
+            -1,null);
 
         Assertions.assertNotNull(booksFound);
-        Assertions.assertTrue(booksFound.size() > 0);
+        Assertions.assertTrue(booksFound.getContent().size() > 0);
     }
 
 }

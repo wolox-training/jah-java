@@ -15,10 +15,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import wolox.training.constants.ErrorConstants;
 
+@Data
+@AllArgsConstructor
 @Entity
 @Table(name = "book")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -31,28 +37,28 @@ public class Book {
 
     @Column(nullable = true)
     private String genre;
-    @NotNull
+    @NonNull
     @Column(nullable = false)
     private String author;
-    @NotNull
+    @NonNull
     @Column(nullable = false)
     private String image;
-    @NotNull
+    @NonNull
     @Column(nullable = false)
     private String title;
-    @NotNull
+    @NonNull
     @Column(nullable = false)
     private String subtitle;
-    @NotNull
+    @NonNull
     @Column(nullable = false)
     private String publisher;
-    @NotNull
+    @NonNull
     @Column(nullable = false)
     private String year;
-    @NotNull
+    @NonNull
     @Column(nullable = false)
     private int pages;
-    @NotNull
+    @NonNull
     @Column(nullable = false, unique = true)
     private String isbn;
 

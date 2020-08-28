@@ -100,4 +100,13 @@ public class BookControllerTest {
             .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @Test
+    public void whenFindByIsbnThenReturnBook() throws Exception{
+        Mockito.when(bookService.createByOpenLibrary("78766")).thenReturn(book);
+        mvc.perform(get("/api/books/isbn/78766")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestJson))
+            .andExpect(MockMvcResultMatchers.status().isCreated());
+    }
+
 }

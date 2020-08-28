@@ -38,7 +38,6 @@ public class UserControllerTest {
     @MockBean
     private IUserService userService;
 
-    @MockBean
     private User user;
 
     String requestJson;
